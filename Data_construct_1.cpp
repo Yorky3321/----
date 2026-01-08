@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 using namespace std;
 
@@ -35,7 +36,7 @@ int main(int argc, char const *argv[])
         }
         for (const auto& row : A) {
             for (const auto& val : row) {
-                cout << val << " ";
+                cout << left << setw(3) << val;
             }
             cout << endl;
         }
