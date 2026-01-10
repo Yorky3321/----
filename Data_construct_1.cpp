@@ -34,11 +34,30 @@ int main(int argc, char const *argv[])
             }
             A[r][c] = y;
         }
-        for (const auto& row : A) {
-            for (const auto& val : row) {
-                cout << left << setw(3) << val;
+        cout << "Origin" << "  |  " << "Vert flap" << "  |  " << "R.turn" << "  |  " << "L.turn" << "  |  " << "Eqat flap" << endl;
+        for (int x = 0; x < i; x++) {
+            for (int y = 0; y < i; y++) {
+                cout << left << setw(3) << A[x][y];
+            }
+            cout << "  " << "|  ";
+            for (int y = i-1; y >= 0; y--) {
+                cout << left << setw(3) << A[x][y];
+            }
+            cout << "  " << "|  ";
+            for (int y = i-1; y >= 0; y--) {
+                cout << left << setw(3) << A[y][x];
+            }
+            cout << "  " << "|  ";
+            x = i - x - 1;
+            for (int y = 0; y < i; y++) {
+                cout << left << setw(3) << A[y][x];
+            }
+            cout << "  " << "|  ";
+            for (int y = 0; y < i; y++) {
+                cout << left << setw(3) << A[x][y];
             }
             cout << endl;
+            x = i - x - 1;
         }
     }
     return 0;
