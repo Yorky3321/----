@@ -14,6 +14,7 @@ int main() {
     }
     cout << "Answers :";
     for (int idx = 0; idx < c; idx++) {
+        if (numbers[idx] == 0) return 0;
         n = numbers[idx];
         int A[80] = {0};
         int from = 79;                /* tarageting the strating position of array A*/
