@@ -1,11 +1,13 @@
 #include<bitset>
+#include<vector>
+#include<string>
 #include<iostream>
 
 using namespace std;
 
 class Tset {
     public:
-        Tset(char *d) {
+        Tset(string d) {
             int c;
             for (int i = 0; i < 256 && d[i] != '\0'; i++) {
                 c = (int)d[i];
@@ -93,12 +95,18 @@ int main() {
     int times;
     cin >> times;
     int t = 0;
+    vector<string> inputs;
     while (t != times) {
-        char us[256], cs[256], s[1];
+        string us, cs, s;
         cin >> us >> cs >> s;
-        Tset A(us), B(cs);
-        out(A, B, s[0]);
+        inputs.push_back(us);
+        inputs.push_back(cs);
+        inputs.push_back(s);
         t++;
     }
+    for (int i = 0; i < inputs.size(); i += 3) {
+        Tset A(inputs[i]), B(inputs[i + 1]);
+        out(A, B, inputs[i + 2][0]);
+    } 
     return 0;     
 }
