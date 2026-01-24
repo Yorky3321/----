@@ -1,31 +1,104 @@
+#include<bitset>
 #include<iostream>
 
 using namespace std;
 
 class Tset {
     public:
-        Tset(char *d, char s) {
-            for (int i = 0; i < 256 && d[i] != '\0'; i++) data[i] = d[i];
-            special = s;
+        Tset(char *d) {
+            int c;
+            for (int i = 0; i < 256 && d[i] != '\0'; i++) {
+                c = (int)d[i];
+                data[c] = 1;
+            }
+            ++count;
+            if (count % 2 == 0) name = 'B';
+            else name = 'A';
         }
         void display() {
-            for (int i = 0; i < 256 && data[i] != '\0'; i++) {
-                cout << data[i] << " ";
+            cout << ": {";
+            for (int i = 0; i < 256; i++) {
+                if (data[i]) {
+                    cout << (char)i;
+                }
             }
-            cout << endl;
+            cout << '}' << endl;
         }
+        friend bool operator==(const Tset& A, const Tset& B) {
+            return A.data == B.data;
+        }
+        friend Tset operator+(const Tset &A, const Tset &B) {
+            Tset result;
+            result.data = A.data | B.data;
+            return result;
+        }
+        friend Tset operator-(const Tset &A, const Tset &B) {
+            Tset result;
+            result.data = A.data & (~B.data);
+            return result;
+        }
+        friend Tset operator*(const Tset &A, const Tset &B) {
+            Tset result;
+            result.data = A.data & B.data;
+            return result;
+        }
+        friend bool operator>=(const Tset &A, const Tset &B) {
+            return A * B == B;
+        }
+        void in(char s) {
+            int idx = static_cast<unsigned char>(s);  // To prevent negative indexing
+            if (data[idx]) {
+                cout << '\'' << s << "' is in " << name << endl;
+            } else {
+                cout << '\'' << s << "' is not in " << name << endl;
+            }
+        }
+        friend void out(Tset &A, Tset &B, char s);
     private:
-        char data[256] = {0};
-        char special;
+        bitset<256> data;
+        static int count;         // static member belongs only to the hole class
+        Tset() : name('?') {};    // To let variable be created in operator overloading functions without misleading "count"
+                                  // and pre-name "name" as '?' and using "{}" to ignoere other initialization
+        char name;
 };
 
-int main() {
-    cout << "Set Operations :" << endl;
-    char us[256], cs[256];
-    cin >> us >> cs;
-    Tset A(us, 0);
-    Tset B(cs, 0);
+void out(Tset &A, Tset &B, char s) {
+    cout << A.name;
     A.display();
+    cout << B.name;
     B.display();
-    return 0;
+    Tset result = A + B;
+    cout << "A + B";
+    result.display();
+    result = A * B;
+    cout << "A * B";
+    result.display();
+    result = A - B;
+    cout << "A - B";
+    result.display();
+    result = B - A;
+    cout << "B - A";
+    result.display();
+    if (A >= B) cout << A.name << " contains " << B.name << endl;
+    else cout << A.name << " does not contain " << B.name << endl;
+    if (B >= A) cout << B.name << " contains " << A.name << endl;
+    else cout << B.name << " does not contain " << A.name << endl;
+    A.in(s);
+    B.in(s);
+}
+
+int Tset::count = 0;         // initialize static member outside the class
+
+int main() {
+    int times;
+    cin >> times;
+    int t = 0;
+    while (t != times) {
+        char us[256], cs[256], s[1];
+        cin >> us >> cs >> s;
+        Tset A(us), B(cs);
+        out(A, B, s[0]);
+        t++;
+    }
+    return 0;     
 }
